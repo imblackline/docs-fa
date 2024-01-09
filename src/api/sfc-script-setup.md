@@ -1,6 +1,11 @@
 # \<script setup> {#script-setup}
 
-`<script setup>` is a compile-time syntactic sugar for using Composition API inside Single-File Components (SFCs). It is the recommended syntax if you are using both SFCs and Composition API. It provides a number of advantages over the normal `<script>` syntax:
+`<script setup>` یک سینتکس برای زیبا کردن (syntactic sugar) در زمان کامپایل است  برای استفاده از Composition API در کامپوننت های تک فایلی (SFC) است. اگر از SFC ها و Composition API استفاده می کنید، این سینتکس توصیه شده است. چندین مزیت نسبت به سینتکس معمولی `<script>` دارد:
+
+- کد مختصر تر با boilerplate کمتر
+- امکان تعریف props و ایونت‌های emit شده با استفاده از TypeScript خالص
+- عملکرد بهتر در زمان اجرا (تمپلیت در یک تابع رندر در همان اسکوپ، بدون پروکسی میانی کامپایل می شود)
+- عملکرد بهتر IDE در type-inference (کار کمتری برای سرور زبان برای استخراج انواع از کد)
 
 - More succinct code with less boilerplate
 - Ability to declare props and emitted events using pure TypeScript
