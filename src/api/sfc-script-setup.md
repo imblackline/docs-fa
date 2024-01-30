@@ -5,28 +5,22 @@
 - کد مختصر تر با boilerplate کمتر
 - امکان تعریف props و ایونت‌های emit شده با استفاده از TypeScript خالص
 - عملکرد بهتر در زمان اجرا (تمپلیت در یک تابع رندر در همان اسکوپ، بدون پروکسی میانی کامپایل می شود)
-- عملکرد بهتر IDE در type-inference (کار کمتری برای سرور زبان برای استخراج انواع از کد)
+- عملکرد بهتر IDE در type-inference (کار کمتر برای سرور زبان برای استخراج تایپ ها از کد)
 
-- More succinct code with less boilerplate
-- Ability to declare props and emitted events using pure TypeScript
-- Better runtime performance (the template is compiled into a render function in the same scope, without an intermediate proxy)
-- Better IDE type-inference performance (less work for the language server to extract types from code)
+## سینتکس پایه {#basic-syntax}
 
-## Basic Syntax {#basic-syntax}
-
-To opt-in to the syntax, add the `setup` attribute to the `<script>` block:
+برای شروع سینتکس، ویژگی `setup` را به بلوک `<script>` اضافه کنید:
 
 ```vue
 <script setup>
 console.log('hello script setup')
 </script>
 ```
+کد داخل به عنوان محتوای تابع `setup()` کامپوننت کامپایل می‌شود. این بدان معناست که برخلاف `<script>` معمولی، که تنها یک بار در هنگام ایمپورت شدن کامپوننت اجرا می‌شود، کد داخل `<script setup>` هر بار که نمونه‌ای از کامپوننت ایجاد می‌شود، اجرا می‌شود.
 
-The code inside is compiled as the content of the component's `setup()` function. This means that unlike normal `<script>`, which only executes once when the component is first imported, code inside `<script setup>` will **execute every time an instance of the component is created**.
+### اتصالات سطح بالا داخل تمپلیت در دسترس قرار می گیرند {#top-level-bindings-are-exposed-to-template}
 
-### Top-level bindings are exposed to template {#top-level-bindings-are-exposed-to-template}
-
-When using `<script setup>`, any top-level bindings (including variables, function declarations, and imports) declared inside `<script setup>` are directly usable in the template:
+هنگام استفاده از `<script setup>`، هر پیوند سطح بالا (شامل متغیرها، توابع، و ایمپورت ها) اعلام شده در `<script setup>` مستقیماً در تمپلیت قابل استفاده است:
 
 ```vue
 <script setup>
@@ -43,8 +37,7 @@ function log() {
   <button @click="log">{{ msg }}</button>
 </template>
 ```
-
-Imports are exposed in the same fashion. This means you can directly use an imported helper function in template expressions without having to expose it via the `methods` option:
+ایمپورت ها نیز به همین شکل در دسترس قرار می گیرند. این بدان معنی است که می توانید مستقیماً از یک تابع کمکی وارد شده در عبارات تمپلیت استفاده کنید بدون اینکه مجبور باشید آن را از طریق گزینه `methods` در دسترس قرار دهید:
 
 ```vue
 <script setup>
@@ -58,7 +51,7 @@ import { capitalize } from './helpers'
 
 ## Reactivity {#reactivity}
 
-Reactive state needs to be explicitly created using [Reactivity APIs](./reactivity-core). Similar to values returned from a `setup()` function, refs are automatically unwrapped when referenced in templates:
+حالت reactive باید به صراحت با استفاده از [Reactivity API](./reactivity-core) ها ایجاد شود. مشابه مقادیر بازگردانده شده از یک تابع `setup()`، زمانی که در تمپلیت ها ارجاع داده می‌شود، ref‌ها به‌طور خودکار باز می‌شوند:
 
 ```vue
 <script setup>
@@ -72,9 +65,9 @@ const count = ref(0)
 </template>
 ```
 
-## Using Components {#using-components}
+## استفاده از کامپوننت ها {#using-components}
 
-Values in the scope of `<script setup>` can also be used directly as custom component tag names:
+مقادیر موجود در اسکوپ `<script setup>` همچنین می‌توانند مستقیماً به عنوان نام تگ کامپوننت های سفارشی استفاده شوند:
 
 ```vue
 <script setup>
@@ -85,12 +78,11 @@ import MyComponent from './MyComponent.vue'
   <MyComponent />
 </template>
 ```
+`MyComponent` را به عنوان یک متغیر در نظر بگیرید. اگر از JSX استفاده کرده اید، مدل ذهنی در اینجا مشابه است. معادل  kebab-case تگ `<my-component>` نیز در تمپلیت کار می‌کند - با این حال، برچسب‌های کامپوننت PascalCase برای یکپارچگی به شدت توصیه می‌شوند. همچنین به تمایز از عناصر سفارشی بومی کمک می کند.
 
-Think of `MyComponent` as being referenced as a variable. If you have used JSX, the mental model is similar here. The kebab-case equivalent `<my-component>` also works in the template - however PascalCase component tags are strongly recommended for consistency. It also helps differentiating from native custom elements.
+### کامپوننت های دینامیک {#dynamic-components}
 
-### Dynamic Components {#dynamic-components}
-
-Since components are referenced as variables instead of registered under string keys, we should use dynamic `:is` binding when using dynamic components inside `<script setup>`:
+از آنجایی که کامپوننت‌ها به‌جای ثبت‌شدن در ذیل کلیدهای رشته‌ای، به‌عنوان متغیر ارجاع می‌شوند، هنگام استفاده از کامپوننت های دینامیک در `<script setup>` باید از اتصال دینامیک &lrm;`:is` استفاده کنیم:
 
 ```vue
 <script setup>
@@ -103,8 +95,7 @@ import Bar from './Bar.vue'
   <component :is="someCondition ? Foo : Bar" />
 </template>
 ```
-
-Note how the components can be used as variables in a ternary expression.
+توجه داشته باشید که چگونه می توان از کامپوننت ها به عنوان متغیر در یک عبارت سه تایی (ternary expression) استفاده کرد.
 
 ### Recursive Components {#recursive-components}
 
