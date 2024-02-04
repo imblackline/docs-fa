@@ -97,19 +97,19 @@ import Bar from './Bar.vue'
 ```
 توجه داشته باشید که چگونه می توان از کامپوننت ها به عنوان متغیر در یک عبارت سه تایی (ternary expression) استفاده کرد.
 
-### Recursive Components {#recursive-components}
+### کامپوننت های بازگشتی {#recursive-components}
 
-An SFC can implicitly refer to itself via its filename. E.g. a file named `FooBar.vue` can refer to itself as `<FooBar/>` in its template.
+یک SFC می تواند به طور ضمنی از طریق نام فایل خود، به خودش اشاره کند. به عنوان مثال فایلی به نام `FooBar.vue` می‌تواند در تمپلیت خود به `<FooBar/>` اشاره کند.
 
-Note this has lower priority than imported components. If you have a named import that conflicts with the component's inferred name, you can alias the import:
+توجه داشته باشید که اولویت کمتری نسبت به کامپوننت های ایمپورت شده دارد. اگر یک import با نام مشخص دارید که با نام استنباط شده مؤلفه تعارض دارد، می توانید با نام مستعار import کنید:
 
 ```js
 import { FooBar as FooBarChild } from './components'
 ```
 
-### Namespaced Components {#namespaced-components}
+### کامپوننت های Namespaced {#namespaced-components}
 
-You can use component tags with dots like `<Foo.Bar>` to refer to components nested under object properties. This is useful when you import multiple components from a single file:
+می‌توانید از تگ‌های کامپوننت با نقطه‌هایی مانند `<Foo.Bar>` برای اشاره به کامپوننت‌های تودرتو در زیر ویژگی‌های شی استفاده کنید. این زمانی مفید است که چندین کامپوننت را از یک فایل وارد کنید:
 
 ```vue
 <script setup>
